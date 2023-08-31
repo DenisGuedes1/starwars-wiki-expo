@@ -1,9 +1,9 @@
 import React from 'react'
 import {Text} from'./styles'
 
-export const CustomText =({children, color})=>{
+export const CustomText =({children,...props})=>{
     return (
-        <Text color={color}>
+        <Text {...props} >
             {children}
         </Text>
     )

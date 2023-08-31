@@ -10,3 +10,6 @@ export const Container = styled.View`
     height: ${({theme, h})=> (h ? `${theme.metrics.px(h)}px`: '100%')};
 
 `
+export const ScreenScrollContainer = styled.ScrollView`
+     background-color: ${({bg,theme}) => theme.colors[bg || 'dark'] };
+`
