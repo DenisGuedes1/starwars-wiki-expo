@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {ScreenScrollContainer} from '../../components'
-
 import { Hero, HomeList } from '../../components/organisms'
+import { userGetData } from '../../services/hooks'
 const Fake_data = [
     { id: 0,
      image_url:
@@ -20,6 +20,17 @@ const Fake_data = [
  ]
 
 export const Home = () =>{
+    const {getFilms} = userGetData()
+
+    const callGetFilms = async() =>{
+        const response = await getFilms()
+        console.log({response})
+    }
+
+    useEffect(()=>{ 
+        callGetFilms()
+
+    }, [])
     return(
         <ScreenScrollContainer>
             <Hero item={{
