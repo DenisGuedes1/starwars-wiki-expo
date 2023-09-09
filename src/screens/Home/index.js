@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {ScreenScrollContainer} from '../../components'
 import { Hero, HomeList } from '../../components/organisms'
 import { userGetData } from '../../services/hooks'
+import { Loader } from '../../components'
 const Fake_data = [
     { id: 0,
      image_url:
@@ -20,17 +21,32 @@ const Fake_data = [
  ]
 
 export const Home = () =>{
-    const {getFilms} = userGetData()
+    const {getFilms, getCharacters} = userGetData()
+    const [ loading, setLoading]= useState(true)
+    const [films, setFilms] = useState([])
+    const [characters, setCharacters] = useState([])
 
-    const callGetFilms = async() =>{
-        const response = await getFilms()
-        console.log({response})
+    const callGetData = async() =>{
+        const filmsResponse = await getFilms()
+        const charactersResponse = await getCharacters()
+
+        if(!filmsResponse.error && !charactersResponse.error){
+            setFilms(filmsResponse)
+            setCharacters(charactersResponse)
+            setLoading(false)
+        }
+    
     }
 
     useEffect(()=>{ 
-        callGetFilms()
+        callGetData()
 
     }, [])
+    if(loading){
+        <ScreenScrollContainer>
+            <Loader/>
+        </ScreenScrollContainer>
+    }
     return(
         <ScreenScrollContainer>
             <Hero item={{
@@ -39,7 +55,13 @@ export const Home = () =>{
                 type: 'Filme',
                 image_url: 'https://static.wikia.nocookie.net/starwars/images/7/75/EPI_TPM_poster.png/revision/latest?cb=20130822171446'
             }} />    
+            {/* <Hero item={{
+                    ...films[0],
+                    type: 'film'
+            }} />     */}
             <HomeList title="Filmes" data={Fake_data} />
+            {/* <HomeList title="Filmes" data={films} />
+            <HomeList title="Filmes" data={characters} /> */}
             <HomeList title="Personagens" data={Fake_data} />
         </ScreenScrollContainer>
     )
